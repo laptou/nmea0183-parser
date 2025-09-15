@@ -16,7 +16,7 @@ license = "MIT OR Apache-2.0"
 members = ["nmea0183-derive"]
 
 [dependencies]
-nom = "8.0.0"
+nom = { version = "8.0.0", default-features = false }
 heapless = { version = "0.9", optional = true }
 serde = { version = "1.0.219", optional = true, features = ["derive"] }
 time = { version = "0.3.41", optional = true }
@@ -31,6 +31,8 @@ nmea-v3-0 = ["nmea-v2-3"]
 nmea-v4-11 = ["nmea-v3-0"]
 derive = ["dep:nmea0183-derive"]
 defmt = ["dep:defmt", "heapless/defmt"]
+alloc = ["nom/alloc"]
+
 
 [package.metadata.docs.rs]
 features = ["nmea-v4-11"]

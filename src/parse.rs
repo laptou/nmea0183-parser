@@ -3,9 +3,11 @@ use nom::{
     character::complete::{anychar, char},
     combinator::opt,
     error::ParseError,
-    multi::many0,
     sequence::preceded,
 };
+
+#[cfg(feature = "alloc")]
+use nom::multi::many0;
 
 use crate::{Error, IResult};
 
@@ -341,6 +343,7 @@ where
     }
 }
 
+#[cfg(feature = "alloc")]
 impl<T, I, E> NmeaParse<I, E> for Vec<T>
 where
     T: NmeaParse<I, E>,
@@ -405,6 +408,7 @@ mod tests {
     use crate::{IResult, NmeaParse};
     use nom::{Parser, character::complete::char};
 
+    #[cfg(feature = "alloc")]
     #[test]
     fn test_parse_vec() {
         let input = "1,2,,4";
