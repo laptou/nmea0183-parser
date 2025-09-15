@@ -460,6 +460,7 @@
 //! [NMEA 0183 standard documentation](https://gpsd.gitlab.io/gpsd/NMEA.html).
 
 #![cfg_attr(docsrs, feature(doc_cfg))]
+#![no_std]
 
 mod error;
 mod nmea0183;

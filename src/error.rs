@@ -3,7 +3,7 @@
 //! This module defines the error types used throughout the NMEA parsing library.
 
 use nom::error::{ErrorKind, FromExternalError, ParseError};
-use std::fmt::Debug;
+use core::fmt::Debug;
 
 /// Holds the result of parsing functions.
 ///
