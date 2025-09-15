@@ -158,10 +158,10 @@ where
             )));
         }
 
-        let milliseconds = second.fract() * 1000.0;
-        let second = second.trunc();
+        let whole_seconds = second as u8;
+        let milliseconds = ((second - whole_seconds as f32) * 1000.0) as u16;
 
-        let time = time::Time::from_hms_milli(hour, minute, second as u8, milliseconds as u16).or(
+        let time = time::Time::from_hms_milli(hour, minute, whole_seconds, milliseconds).or(
             Err(nom::Err::Error(nom::error::make_error(
                 i.clone(),
                 nom::error::ErrorKind::Verify,
