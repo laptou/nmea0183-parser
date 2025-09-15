@@ -38,6 +38,13 @@ pub struct GSV {
     pub signal_id: Option<SignalId>,
 }
 
+#[cfg(feature = "defmt")]
+impl defmt::Format for GSV {
+    fn format(&self, f: defmt::Formatter) {
+        defmt::write!(f, "{:?}", defmt::Debug2Format(self));
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

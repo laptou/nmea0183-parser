@@ -50,6 +50,13 @@ pub struct GGA {
     pub ref_station_id: Option<u16>,
 }
 
+#[cfg(feature = "defmt")]
+impl defmt::Format for GGA {
+    fn format(&self, f: defmt::Formatter) {
+        defmt::write!(f, "{:?}", defmt::Debug2Format(self));
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

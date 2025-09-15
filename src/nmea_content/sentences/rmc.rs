@@ -72,6 +72,13 @@ pub struct RMC {
     pub nav_status: Option<NavStatus>,
 }
 
+#[cfg(feature = "defmt")]
+impl defmt::Format for RMC {
+    fn format(&self, f: defmt::Formatter) {
+        defmt::write!(f, "{:?}", defmt::Debug2Format(self));
+    }
+}
+
 pub fn magnetic_variation<I, E>(i: I) -> IResult<I, Option<f32>, E>
 where
     I: Input + Offset + ParseTo<f32> + AsBytes,

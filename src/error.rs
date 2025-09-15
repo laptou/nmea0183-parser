@@ -66,6 +66,17 @@ pub enum Error<I, E> {
     Unknown,
 }
 
+#[cfg(feature = "defmt")]
+impl<I, E> defmt::Format for Error<I, E>
+where
+    I: core::fmt::Debug,
+    E: core::fmt::Debug,
+{
+    fn format(&self, f: defmt::Formatter) {
+        defmt::write!(f, "{:?}", defmt::Debug2Format(self));
+    }
+}
+
 impl<I, E> ParseError<I> for Error<I, E>
 where
     E: ParseError<I>,

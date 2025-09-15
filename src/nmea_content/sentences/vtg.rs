@@ -45,6 +45,13 @@ pub struct VTG {
     pub faa_mode: Option<FaaMode>,
 }
 
+#[cfg(feature = "defmt")]
+impl defmt::Format for VTG {
+    fn format(&self, f: defmt::Formatter) {
+        defmt::write!(f, "{:?}", defmt::Debug2Format(self));
+    }
+}
+
 fn speed_over_ground<I, E>(i: I) -> IResult<I, Option<f32>, E>
 where
     I: Input + Clone + Offset + ParseTo<f32> + AsBytes,

@@ -188,6 +188,13 @@ pub enum NmeaSentence {
     ZDA(ZDA),
 }
 
+#[cfg(feature = "defmt")]
+impl defmt::Format for NmeaSentence {
+    fn format(&self, f: defmt::Formatter) {
+        defmt::write!(f, "{:?}", defmt::Debug2Format(self));
+    }
+}
+
 #[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 #[derive(Debug, Default, Clone, PartialEq, NmeaParse)]
 #[nmea(selector(one_of("AV")))]
@@ -200,6 +207,13 @@ pub enum Status {
     #[nmea(selector('V'))]
     /// V - Invalid
     Invalid,
+}
+
+#[cfg(feature = "defmt")]
+impl defmt::Format for Status {
+    fn format(&self, f: defmt::Formatter) {
+        defmt::write!(f, "{:?}", defmt::Debug2Format(self));
+    }
 }
 
 #[cfg(feature = "nmea-v2-3")]
@@ -250,6 +264,13 @@ pub enum FaaMode {
     Unsafe,
 }
 
+#[cfg(all(feature = "defmt", feature = "nmea-v2-3"))]
+impl defmt::Format for FaaMode {
+    fn format(&self, f: defmt::Formatter) {
+        defmt::write!(f, "{:?}", defmt::Debug2Format(self));
+    }
+}
+
 #[cfg(feature = "nmea-v4-11")]
 #[cfg_attr(docsrs, doc(cfg(feature = "nmea-v4-11")))]
 #[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
@@ -279,6 +300,13 @@ pub enum NavStatus {
     #[nmea(selector('V'))]
     /// V - Valid
     Valid,
+}
+
+#[cfg(all(feature = "defmt", feature = "nmea-v4-11"))]
+impl defmt::Format for NavStatus {
+    fn format(&self, f: defmt::Formatter) {
+        defmt::write!(f, "{:?}", defmt::Debug2Format(self));
+    }
 }
 
 #[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
@@ -329,6 +357,13 @@ pub enum Quality {
     Simulation,
 }
 
+#[cfg(feature = "defmt")]
+impl defmt::Format for Quality {
+    fn format(&self, f: defmt::Formatter) {
+        defmt::write!(f, "{:?}", defmt::Debug2Format(self));
+    }
+}
+
 #[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 #[derive(Debug, Default, Clone, PartialEq, NmeaParse)]
 #[nmea(selector(one_of("AM")))]
@@ -341,6 +376,13 @@ pub enum SelectionMode {
     #[nmea(selector('M'))]
     /// M - Manual, forced to operate in 2D or 3D
     Manual,
+}
+
+#[cfg(feature = "defmt")]
+impl defmt::Format for SelectionMode {
+    fn format(&self, f: defmt::Formatter) {
+        defmt::write!(f, "{:?}", defmt::Debug2Format(self));
+    }
 }
 
 #[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
@@ -358,6 +400,13 @@ pub enum FixMode {
     #[nmea(selector('3'))]
     /// 3 - 3D Fix
     Fix3D,
+}
+
+#[cfg(feature = "defmt")]
+impl defmt::Format for FixMode {
+    fn format(&self, f: defmt::Formatter) {
+        defmt::write!(f, "{:?}", defmt::Debug2Format(self));
+    }
 }
 
 #[cfg(feature = "nmea-v4-11")]
@@ -388,6 +437,13 @@ pub enum SystemId {
     #[nmea(selector('6'))]
     /// 6 - NavIC (GI)
     Navic,
+}
+
+#[cfg(all(feature = "defmt", feature = "nmea-v4-11"))]
+impl defmt::Format for SystemId {
+    fn format(&self, f: defmt::Formatter) {
+        defmt::write!(f, "{:?}", defmt::Debug2Format(self));
+    }
 }
 
 /// NMEA 4.11 Signal ID
@@ -423,11 +479,25 @@ pub struct Satellite {
     pub snr: Option<u8>,
 }
 
+#[cfg(feature = "defmt")]
+impl defmt::Format for Satellite {
+    fn format(&self, f: defmt::Formatter) {
+        defmt::write!(f, "{:?}", defmt::Debug2Format(self));
+    }
+}
+
 #[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 #[derive(Debug, Default, Clone, PartialEq)]
 pub struct Location {
     pub latitude: f64,
     pub longitude: f64,
+}
+
+#[cfg(feature = "defmt")]
+impl defmt::Format for Location {
+    fn format(&self, f: defmt::Formatter) {
+        defmt::write!(f, "{:?}", defmt::Debug2Format(self));
+    }
 }
 
 #[cfg(test)]

@@ -35,6 +35,13 @@ pub struct DPT {
     pub max_range_scale: Option<f32>,
 }
 
+#[cfg(feature = "defmt")]
+impl defmt::Format for DPT {
+    fn format(&self, f: defmt::Formatter) {
+        defmt::write!(f, "{:?}", defmt::Debug2Format(self));
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

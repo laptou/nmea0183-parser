@@ -25,6 +25,13 @@ pub struct DBT {
     pub water_depth: Option<f32>,
 }
 
+#[cfg(feature = "defmt")]
+impl defmt::Format for DBT {
+    fn format(&self, f: defmt::Formatter) {
+        defmt::write!(f, "{:?}", defmt::Debug2Format(self));
+    }
+}
+
 fn water_depth<I, E>(i: I) -> IResult<I, Option<f32>, E>
 where
     I: Input + Offset + ParseTo<f32> + AsBytes,

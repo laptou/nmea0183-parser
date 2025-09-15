@@ -25,6 +25,7 @@ use crate::{Error, IResult};
 /// NMEA 0183 messages can include an optional checksum in the format `*CC` where
 /// CC is a two-digit hexadecimal value representing the XOR of all bytes in the
 /// message content (excluding the '$' prefix and '*' delimiter).
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 #[derive(Debug, Default, Clone, Copy, PartialEq)]
 pub enum ChecksumMode {
     #[default]
@@ -51,6 +52,7 @@ pub enum ChecksumMode {
 ///
 /// NMEA 0183 messages typically end with a carriage return and line feed (`\r\n`),
 /// but some systems or applications may omit these characters.
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 #[derive(Debug, Default, Clone, Copy, PartialEq)]
 pub enum LineEndingMode {
     #[default]
@@ -143,6 +145,7 @@ pub enum LineEndingMode {
 /// assert!(lenient_parser.parse("$GPGGA,data*99").is_err()); // (invalid checksum)
 /// assert!(lenient_parser.parse("$GPGGA,data\r\n").is_err()); // (CRLF present)
 /// ```
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 #[must_use]
 pub struct Nmea0183ParserBuilder {
     /// Checksum mode for the parser.

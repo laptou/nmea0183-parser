@@ -41,6 +41,13 @@ pub struct GLL {
     pub faa_mode: Option<FaaMode>,
 }
 
+#[cfg(feature = "defmt")]
+impl defmt::Format for GLL {
+    fn format(&self, f: defmt::Formatter) {
+        defmt::write!(f, "{:?}", defmt::Debug2Format(self));
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

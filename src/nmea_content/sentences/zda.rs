@@ -35,6 +35,13 @@ pub struct ZDA {
     pub utc_offset: Option<time::UtcOffset>,
 }
 
+#[cfg(feature = "defmt")]
+impl defmt::Format for ZDA {
+    fn format(&self, f: defmt::Formatter) {
+        defmt::write!(f, "{:?}", defmt::Debug2Format(self));
+    }
+}
+
 impl From<time::OffsetDateTime> for ZDA {
     fn from(value: time::OffsetDateTime) -> Self {
         ZDA {

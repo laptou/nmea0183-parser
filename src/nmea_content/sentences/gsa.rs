@@ -47,6 +47,13 @@ pub struct GSA {
     pub system_id: Option<SystemId>,
 }
 
+#[cfg(feature = "defmt")]
+impl defmt::Format for GSA {
+    fn format(&self, f: defmt::Formatter) {
+        defmt::write!(f, "{:?}", defmt::Debug2Format(self));
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
