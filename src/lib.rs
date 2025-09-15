@@ -462,6 +462,8 @@
 #![cfg_attr(docsrs, feature(doc_cfg))]
 #![no_std]
 
+#[cfg(test)] extern crate std;
+
 mod error;
 mod nmea0183;
 #[cfg(feature = "nmea-content")]

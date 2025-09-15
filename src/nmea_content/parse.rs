@@ -81,7 +81,7 @@ where
     E: ParseError<I>,
 {
     fn parse(i: I) -> IResult<I, Self, E> {
-        let mut elems = Vec::with_capacity(N);
+        let mut elems = heapless::Vec::<_, N>::new();
         let mut i = i;
 
         match T::parse(i.clone()) {
@@ -94,18 +94,18 @@ where
                     )));
                 }
 
-                elems.push(first);
+                elems.push(first).ok().expect("vector to have space");
                 i = i1;
             }
             Err(nom::Err::Error(_)) => {
-                return Ok((i, elems.into_iter().collect()));
+                return Ok((i, elems));
             }
             Err(e) => return Err(e),
         }
 
         loop {
             if elems.len() == N {
-                return Ok((i, elems.into_iter().collect()));
+                return Ok((i, elems));
             }
 
             let len = i.input_len();
@@ -119,15 +119,16 @@ where
                         )));
                     }
 
-                    elems.push(next);
+                    elems.push(next).ok().expect("vector to have space");
                     i = i1;
                 }
-                Err(nom::Err::Error(_)) => return Ok((i, elems.into_iter().collect())),
+                Err(nom::Err::Error(_)) => return Ok((i, elems)),
                 Err(e) => return Err(e),
             };
         }
     }
 
+    #[cfg(feature = "alloc")]
     fn parse_preceded<S>(separator: S) -> impl Parser<I, Output = Self, Error = Error<I, E>>
     where
         S: Parser<I, Error = Error<I, E>>,

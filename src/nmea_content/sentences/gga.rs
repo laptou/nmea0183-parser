@@ -1,4 +1,4 @@
-use std::time::Duration;
+use core::time::Duration;
 
 #[cfg(feature = "serde")]
 use serde::{Deserialize, Serialize};
