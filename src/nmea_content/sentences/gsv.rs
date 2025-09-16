@@ -39,8 +39,6 @@ pub struct GSV {
     pub signal_id: Option<SignalId>,
 }
 
-// defmt formatting derived above under the `defmt` feature
-
 #[cfg(test)]
 mod tests {
     use super::*;

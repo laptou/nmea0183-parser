@@ -77,16 +77,16 @@ impl defmt::Format for RMC {
     fn format(&self, f: defmt::Formatter) {
         defmt::write!(
             f,
-            "RMC {{ fix_time: {:?}, status: {}, location: {:?}, speed_over_ground: {:?}, course_over_ground: {:?}, fix_date: {:?}, magnetic_variation: {:?}, faa_mode: {:?}, nav_status: {:?} }}",
+            "RMC {{ fix_time: {}, status: {}, location: {}, speed_over_ground: {}, course_over_ground: {}, fix_date: {}, magnetic_variation: {}, faa_mode: {}, nav_status: {} }}",
             defmt::Debug2Format(&self.fix_time),
             self.status,
-            defmt::Debug2Format(&self.location),
+            self.location,
             self.speed_over_ground,
             self.course_over_ground,
             defmt::Debug2Format(&self.fix_date),
             self.magnetic_variation,
-            defmt::Debug2Format(&self.faa_mode),
-            defmt::Debug2Format(&self.nav_status),
+            self.faa_mode,
+            self.nav_status,
         );
     }
 }

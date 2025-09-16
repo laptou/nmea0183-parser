@@ -36,8 +36,6 @@ pub struct DPT {
     pub max_range_scale: Option<f32>,
 }
 
-// defmt formatting derived above under the `defmt` feature
-
 #[cfg(test)]
 mod tests {
     use super::*;

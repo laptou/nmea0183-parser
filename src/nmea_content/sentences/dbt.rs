@@ -26,8 +26,6 @@ pub struct DBT {
     pub water_depth: Option<f32>,
 }
 
-// defmt formatting derived above under the `defmt` feature
-
 fn water_depth<I, E>(i: I) -> IResult<I, Option<f32>, E>
 where
     I: Input + Offset + ParseTo<f32> + AsBytes,

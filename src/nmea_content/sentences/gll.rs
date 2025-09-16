@@ -46,11 +46,11 @@ impl defmt::Format for GLL {
     fn format(&self, f: defmt::Formatter) {
         defmt::write!(
             f,
-            "GLL {{ location: {:?}, fix_time: {:?}, status: {}, faa_mode: {:?} }}",
-            defmt::Debug2Format(&self.location),
+            "GLL {{ location: {}, fix_time: {}, status: {}, faa_mode: {} }}",
+            self.location,
             defmt::Debug2Format(&self.fix_time),
             self.status,
-            defmt::Debug2Format(&self.faa_mode),
+            self.faa_mode,
         );
     }
 }

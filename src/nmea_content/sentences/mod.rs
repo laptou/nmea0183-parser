@@ -209,7 +209,7 @@ pub enum Status {
 #[cfg(feature = "nmea-v2-3")]
 #[cfg_attr(docsrs, doc(cfg(feature = "nmea-v2-3")))]
 #[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
-#[cfg_attr(all(feature = "defmt", feature = "nmea-v2-3"), derive(defmt::Format))]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 #[derive(Debug, Default, Clone, PartialEq, NmeaParse)]
 #[cfg_attr(not(feature = "nmea-v4-11"), nmea(selector(one_of("ACDEFMNRSU"))))]
 #[cfg_attr(feature = "nmea-v4-11", nmea(selector(one_of("ACDEFMNPRSU"))))]

@@ -48,8 +48,6 @@ pub struct GSA {
     pub system_id: Option<SystemId>,
 }
 
-// defmt formatting derived above under the `defmt` feature
-
 #[cfg(test)]
 mod tests {
     use super::*;
