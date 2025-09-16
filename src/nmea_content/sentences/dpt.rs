@@ -21,6 +21,7 @@ use crate::{self as nmea0183_parser, NmeaParse};
 /// ```
 #[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 #[cfg_attr(feature = "serde", serde(rename_all = "camelCase"))]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 #[derive(Debug, Default, Clone, PartialEq, NmeaParse)]
 pub struct DPT {
     /// Water depth relative to transducer in meters
@@ -35,12 +36,7 @@ pub struct DPT {
     pub max_range_scale: Option<f32>,
 }
 
-#[cfg(feature = "defmt")]
-impl defmt::Format for DPT {
-    fn format(&self, f: defmt::Formatter) {
-        defmt::write!(f, "{:?}", defmt::Debug2Format(self));
-    }
-}
+// defmt formatting derived above under the `defmt` feature
 
 #[cfg(test)]
 mod tests {

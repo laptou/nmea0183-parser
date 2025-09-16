@@ -73,7 +73,22 @@ where
     E: core::fmt::Debug,
 {
     fn format(&self, f: defmt::Formatter) {
-        defmt::write!(f, "{:?}", defmt::Debug2Format(self));
+        match self {
+            Error::NonAscii => defmt::write!(f, "Error::NonAscii"),
+            Error::ChecksumMismatch { expected, found } => {
+                defmt::write!(f, "Error::ChecksumMismatch {{ expected: {=u8}, found: {=u8} }}", expected, found)
+            }
+            Error::ParsingError(e) => {
+                defmt::write!(f, "Error::ParsingError({:?})", defmt::Debug2Format(e))
+            }
+            Error::UnrecognizedMessage(msg) => {
+                defmt::write!(f, "Error::UnrecognizedMessage({:?})", defmt::Debug2Format(msg))
+            }
+            Error::InvalidField(i) => {
+                defmt::write!(f, "Error::InvalidField({:?})", defmt::Debug2Format(i))
+            }
+            Error::Unknown => defmt::write!(f, "Error::Unknown"),
+        }
     }
 }
 

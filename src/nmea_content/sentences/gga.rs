@@ -53,7 +53,19 @@ pub struct GGA {
 #[cfg(feature = "defmt")]
 impl defmt::Format for GGA {
     fn format(&self, f: defmt::Formatter) {
-        defmt::write!(f, "{:?}", defmt::Debug2Format(self));
+        defmt::write!(
+            f,
+            "GGA {{ fix_time: {:?}, location: {:?}, fix_quality: {}, satellite_count: {:?}, hdop: {:?}, altitude: {:?}, geoidal_separation: {:?}, age_of_dgps: {:?}, ref_station_id: {:?} }}",
+            defmt::Debug2Format(&self.fix_time),
+            defmt::Debug2Format(&self.location),
+            self.fix_quality,
+            self.satellite_count,
+            self.hdop,
+            self.altitude,
+            self.geoidal_separation,
+            defmt::Debug2Format(&self.age_of_dgps),
+            self.ref_station_id,
+        );
     }
 }
 
@@ -61,6 +73,7 @@ impl defmt::Format for GGA {
 mod tests {
     use super::*;
     use crate::IResult;
+    use std::format;
 
     #[test]
     fn test_gga_parsing() {

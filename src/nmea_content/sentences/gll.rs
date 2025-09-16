@@ -44,7 +44,14 @@ pub struct GLL {
 #[cfg(feature = "defmt")]
 impl defmt::Format for GLL {
     fn format(&self, f: defmt::Formatter) {
-        defmt::write!(f, "{:?}", defmt::Debug2Format(self));
+        defmt::write!(
+            f,
+            "GLL {{ location: {:?}, fix_time: {:?}, status: {}, faa_mode: {:?} }}",
+            defmt::Debug2Format(&self.location),
+            defmt::Debug2Format(&self.fix_time),
+            self.status,
+            defmt::Debug2Format(&self.faa_mode),
+        );
     }
 }
 
@@ -52,6 +59,7 @@ impl defmt::Format for GLL {
 mod tests {
     use super::*;
     use crate::IResult;
+    use std::{format, println};
 
     #[test]
     fn test_gll_parsing() {

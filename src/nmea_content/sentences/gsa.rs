@@ -26,6 +26,7 @@ use crate::{
 /// ```
 #[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 #[cfg_attr(feature = "serde", serde(rename_all = "camelCase"))]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 #[derive(Debug, Default, Clone, PartialEq, NmeaParse)]
 pub struct GSA {
     /// Selection mode
@@ -47,12 +48,7 @@ pub struct GSA {
     pub system_id: Option<SystemId>,
 }
 
-#[cfg(feature = "defmt")]
-impl defmt::Format for GSA {
-    fn format(&self, f: defmt::Formatter) {
-        defmt::write!(f, "{:?}", defmt::Debug2Format(self));
-    }
-}
+// defmt formatting derived above under the `defmt` feature
 
 #[cfg(test)]
 mod tests {

@@ -28,6 +28,7 @@ use crate::{self as nmea0183_parser, IResult, NmeaParse, nmea_content::parse::wi
 /// ```
 #[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 #[cfg_attr(feature = "serde", serde(rename_all = "camelCase"))]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 #[derive(Debug, Default, Clone, PartialEq, NmeaParse)]
 pub struct VTG {
     #[nmea(parser(with_unit('T')))]
@@ -45,12 +46,7 @@ pub struct VTG {
     pub faa_mode: Option<FaaMode>,
 }
 
-#[cfg(feature = "defmt")]
-impl defmt::Format for VTG {
-    fn format(&self, f: defmt::Formatter) {
-        defmt::write!(f, "{:?}", defmt::Debug2Format(self));
-    }
-}
+// defmt formatting derived above under the `defmt` feature
 
 fn speed_over_ground<I, E>(i: I) -> IResult<I, Option<f32>, E>
 where
@@ -73,6 +69,7 @@ where
 #[cfg(test)]
 mod tests {
     use super::*;
+    use std::println;
 
     #[test]
     fn test_vtg_parsing() {

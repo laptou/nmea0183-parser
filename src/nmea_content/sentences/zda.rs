@@ -38,7 +38,13 @@ pub struct ZDA {
 #[cfg(feature = "defmt")]
 impl defmt::Format for ZDA {
     fn format(&self, f: defmt::Formatter) {
-        defmt::write!(f, "{:?}", defmt::Debug2Format(self));
+        defmt::write!(
+            f,
+            "ZDA {{ time: {:?}, date: {:?}, utc_offset: {:?} }}",
+            defmt::Debug2Format(&self.time),
+            defmt::Debug2Format(&self.date),
+            defmt::Debug2Format(&self.utc_offset),
+        );
     }
 }
 
@@ -124,6 +130,7 @@ where
 mod tests {
     use super::*;
     use crate::IResult;
+    use std::println;
 
     #[test]
     fn test_zda_parsing() {

@@ -18,6 +18,7 @@ use crate::{self as nmea0183_parser, NmeaParse, nmea_content::Satellite};
 /// ```
 #[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 #[cfg_attr(feature = "serde", serde(rename_all = "camelCase"))]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 #[derive(Debug, Default, Clone, PartialEq, NmeaParse)]
 pub struct GSV {
     /// Total number of GSV sentences to be transmitted in this group
@@ -38,17 +39,13 @@ pub struct GSV {
     pub signal_id: Option<SignalId>,
 }
 
-#[cfg(feature = "defmt")]
-impl defmt::Format for GSV {
-    fn format(&self, f: defmt::Formatter) {
-        defmt::write!(f, "{:?}", defmt::Debug2Format(self));
-    }
-}
+// defmt formatting derived above under the `defmt` feature
 
 #[cfg(test)]
 mod tests {
     use super::*;
     use crate::IResult;
+    use std::println;
 
     #[test]
     fn test_gsv_parsing() {

@@ -151,6 +151,7 @@ use crate::{self as nmea0183_parser, Error, NmeaParse};
 /// assert!(result.is_err());
 /// ```
 #[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 #[derive(Debug, Clone, PartialEq, NmeaParse)]
 #[nmea(pre_exec(let msg = nmea_input;))]
 // TODO: Handle talker ID
@@ -188,14 +189,8 @@ pub enum NmeaSentence {
     ZDA(ZDA),
 }
 
-#[cfg(feature = "defmt")]
-impl defmt::Format for NmeaSentence {
-    fn format(&self, f: defmt::Formatter) {
-        defmt::write!(f, "{:?}", defmt::Debug2Format(self));
-    }
-}
-
 #[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 #[derive(Debug, Default, Clone, PartialEq, NmeaParse)]
 #[nmea(selector(one_of("AV")))]
 /// Status Mode Indicator
@@ -209,16 +204,12 @@ pub enum Status {
     Invalid,
 }
 
-#[cfg(feature = "defmt")]
-impl defmt::Format for Status {
-    fn format(&self, f: defmt::Formatter) {
-        defmt::write!(f, "{:?}", defmt::Debug2Format(self));
-    }
-}
+// defmt formatting derived above under the `defmt` feature
 
 #[cfg(feature = "nmea-v2-3")]
 #[cfg_attr(docsrs, doc(cfg(feature = "nmea-v2-3")))]
 #[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(all(feature = "defmt", feature = "nmea-v2-3"), derive(defmt::Format))]
 #[derive(Debug, Default, Clone, PartialEq, NmeaParse)]
 #[cfg_attr(not(feature = "nmea-v4-11"), nmea(selector(one_of("ACDEFMNRSU"))))]
 #[cfg_attr(feature = "nmea-v4-11", nmea(selector(one_of("ACDEFMNPRSU"))))]
@@ -264,16 +255,12 @@ pub enum FaaMode {
     Unsafe,
 }
 
-#[cfg(all(feature = "defmt", feature = "nmea-v2-3"))]
-impl defmt::Format for FaaMode {
-    fn format(&self, f: defmt::Formatter) {
-        defmt::write!(f, "{:?}", defmt::Debug2Format(self));
-    }
-}
+// defmt formatting derived above under the `defmt` and `nmea-v2-3` features
 
 #[cfg(feature = "nmea-v4-11")]
 #[cfg_attr(docsrs, doc(cfg(feature = "nmea-v4-11")))]
 #[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(all(feature = "defmt", feature = "nmea-v4-11"), derive(defmt::Format))]
 #[derive(Debug, Default, Clone, PartialEq, NmeaParse)]
 #[nmea(selector(one_of("ADEMNSV")))]
 /// Navigation Status
@@ -302,14 +289,10 @@ pub enum NavStatus {
     Valid,
 }
 
-#[cfg(all(feature = "defmt", feature = "nmea-v4-11"))]
-impl defmt::Format for NavStatus {
-    fn format(&self, f: defmt::Formatter) {
-        defmt::write!(f, "{:?}", defmt::Debug2Format(self));
-    }
-}
+// defmt formatting derived above under the `defmt` and `nmea-v4-11` features
 
 #[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 #[derive(Debug, Default, Clone, PartialEq, NmeaParse)]
 #[cfg_attr(not(feature = "nmea-v2-3"), nmea(selector(one_of("012"))))]
 #[cfg_attr(feature = "nmea-v2-3", nmea(selector(one_of("012345678"))))]
@@ -357,14 +340,10 @@ pub enum Quality {
     Simulation,
 }
 
-#[cfg(feature = "defmt")]
-impl defmt::Format for Quality {
-    fn format(&self, f: defmt::Formatter) {
-        defmt::write!(f, "{:?}", defmt::Debug2Format(self));
-    }
-}
+// defmt formatting derived above under the `defmt` feature
 
 #[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 #[derive(Debug, Default, Clone, PartialEq, NmeaParse)]
 #[nmea(selector(one_of("AM")))]
 /// Selection Mode
@@ -378,14 +357,10 @@ pub enum SelectionMode {
     Manual,
 }
 
-#[cfg(feature = "defmt")]
-impl defmt::Format for SelectionMode {
-    fn format(&self, f: defmt::Formatter) {
-        defmt::write!(f, "{:?}", defmt::Debug2Format(self));
-    }
-}
+// defmt formatting derived above under the `defmt` feature
 
 #[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 #[derive(Debug, Default, Clone, PartialEq, NmeaParse)]
 #[nmea(selector(one_of("123")))]
 /// Fix Mode
@@ -402,16 +377,12 @@ pub enum FixMode {
     Fix3D,
 }
 
-#[cfg(feature = "defmt")]
-impl defmt::Format for FixMode {
-    fn format(&self, f: defmt::Formatter) {
-        defmt::write!(f, "{:?}", defmt::Debug2Format(self));
-    }
-}
+// defmt formatting derived above under the `defmt` feature
 
 #[cfg(feature = "nmea-v4-11")]
 #[cfg_attr(docsrs, doc(cfg(feature = "nmea-v4-11")))]
 #[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(all(feature = "defmt", feature = "nmea-v4-11"), derive(defmt::Format))]
 #[derive(Debug, Default, Clone, PartialEq, NmeaParse)]
 #[nmea(selector(one_of("123456")))]
 /// NMEA 4.11 System ID
@@ -439,12 +410,7 @@ pub enum SystemId {
     Navic,
 }
 
-#[cfg(all(feature = "defmt", feature = "nmea-v4-11"))]
-impl defmt::Format for SystemId {
-    fn format(&self, f: defmt::Formatter) {
-        defmt::write!(f, "{:?}", defmt::Debug2Format(self));
-    }
-}
+// defmt formatting derived above under the `defmt` and `nmea-v4-11` features
 
 /// NMEA 4.11 Signal ID
 ///
@@ -467,6 +433,7 @@ pub type SignalId = u8;
 
 /// Satellite information used in [`GSV`] sentences
 #[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 #[derive(Debug, Default, Clone, PartialEq, NmeaParse)]
 pub struct Satellite {
     /// PRN number of the satellite
@@ -479,26 +446,17 @@ pub struct Satellite {
     pub snr: Option<u8>,
 }
 
-#[cfg(feature = "defmt")]
-impl defmt::Format for Satellite {
-    fn format(&self, f: defmt::Formatter) {
-        defmt::write!(f, "{:?}", defmt::Debug2Format(self));
-    }
-}
+// defmt formatting derived above under the `defmt` feature
 
 #[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 #[derive(Debug, Default, Clone, PartialEq)]
 pub struct Location {
     pub latitude: f64,
     pub longitude: f64,
 }
 
-#[cfg(feature = "defmt")]
-impl defmt::Format for Location {
-    fn format(&self, f: defmt::Formatter) {
-        defmt::write!(f, "{:?}", defmt::Debug2Format(self));
-    }
-}
+// defmt formatting derived above under the `defmt` feature
 
 #[cfg(test)]
 mod tests {
