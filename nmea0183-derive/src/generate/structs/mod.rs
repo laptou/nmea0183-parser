@@ -42,12 +42,6 @@ impl Struct {
                         "nmea0183-derive: Structs do not support `selection_error` attributes; only enums support this feature.",
                     ));
                 }
-                meta::MetaAttributeType::Separator => {
-                    return Err(syn::Error::new(
-                        attribute.span(),
-                        "nmea0183-derive: Structs do not support `separator` attributes yet; this will be implemented in the future.",
-                    ));
-                }
                 _ => {}
             }
         }

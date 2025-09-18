@@ -12,19 +12,25 @@ pub struct Config {
     pub selection_error: Option<TokenStream>,
     pub error_type: Ident,
     pub lifetime: Lifetime,
-    pub separator: TokenStream,
+    // separator to be placed between fields; when none, fields are adjacent
+    pub separator: Option<TokenStream>,
 }
 
 impl Config {
     pub fn from_meta_attributes(attribute_list: &[MetaAttribute]) -> Result<Self> {
         let mut selector_parser = None;
-        let mut separator = quote! { nom::character::complete::char(',') };
+        let mut separator: Option<TokenStream> = Some(quote! { nom::character::complete::char(',') });
         let mut selection_error = None;
 
         for meta in attribute_list {
             match meta.r#type {
                 MetaAttributeType::Selector => selector_parser = Some(meta.arg().unwrap().clone()),
-                MetaAttributeType::Separator => separator = meta.arg().unwrap().clone(),
+                MetaAttributeType::Separator => {
+                    let arg = meta.arg().unwrap().clone();
+                    // allow special value `none` to indicate no separator
+                    let is_none = arg.to_string().trim() == "none";
+                    separator = if is_none { None } else { Some(arg) };
+                }
                 MetaAttributeType::SelectionError => {
                     selection_error = Some(meta.arg().unwrap().clone())
                 }

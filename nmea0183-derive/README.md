@@ -150,7 +150,7 @@ The following attributes are supported:
 | [post_exec](#pre-execution-and-post-execution-code) | both      | Executes Rust code after parsing a field or structure                                               |
 | [selector](#selector-and-selection-error)           | both      | Specifies the value used to match an enum variant                                                   |
 | [selection_error](#selector-and-selection-error)    | top-level | Specifies the error to return if the selector fails to match                                        |
-| [separator](#custom-separator)                      | none      | Intended to specify the separator between fields (currently not supported, defaults to `char(',')`) |
+| [separator](#custom-separator)                      | top-level | Specify custom separator between fields, or `none` for adjacent fields                              |
 | [skip_after](#skip-before-and-after-parsing)        | both      | Skips a specified number of characters after parsing a field or structure                           |
 | [skip_before](#skip-before-and-after-parsing)       | both      | Skips a specified number of characters before parsing a field or structure                          |
 
@@ -414,7 +414,32 @@ enum Data {
 
 ### Custom separator
 
-The `separator` attribute is intended to specify the separator between fields. However, it is currently not supported and defaults to `char(',')`. This means that the parser will expect fields to be separated by commas.
+the `separator` attribute lets you set a custom field separator for a struct or enum. by default it's `char(',')`. set `#[nmea(separator(none))]` to indicate no separator at all (adjacent fields). this affects how subsequent fields are parsed: with a separator it uses `parse_preceded(separator)`, otherwise `parse`.
+
+examples:
+
+```rust
+#[derive(NmeaParse)]
+#[nmea(separator(char('|')))]
+struct Piped {
+    a: u8,
+    b: u16,
+}
+// parses "1|2"
+
+#[derive(NmeaParse)]
+#[nmea(separator(none))]
+struct Adjacent {
+    // custom field parsers must consume exactly their part; no implicit commas
+    #[nmea(parser(nom::character::complete::digit1))]
+    a: &str,
+    #[nmea(parser(nom::character::complete::alpha1))]
+    b: &str,
+}
+// parses "123abc"
+```
+
+for enums, `separator` controls the variant content fields as above once a variant is selected.
 
 ## Generic Type Parameters
 

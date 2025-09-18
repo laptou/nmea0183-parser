@@ -37,17 +37,6 @@ impl Enum {
             ));
         }
 
-        let separator = attributes
-            .iter()
-            .find(|attr| attr.r#type == meta::MetaAttributeType::Separator);
-
-        if let Some(attr) = separator {
-            return Err(syn::Error::new(
-                attr.span(),
-                "nmea0183-derive: Enums do not support `separator` attributes yet; this will be implemented in the future.",
-            ));
-        }
-
         let variant_parsers = dataenum
             .variants
             .iter()
